@@ -41,6 +41,8 @@ def generate_patches_train(isDebug=False):
 
     # generate patches
     for i in range(4000, 20000):
+        if (i%500==0):
+            print("Processing image #" + str(i))
         input_path = get_image_path(True, 64, i)
         label_path = get_image_path(True, 128, i)
         input_img, label_img = preprocess(input_path, label_path)
