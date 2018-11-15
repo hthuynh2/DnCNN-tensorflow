@@ -92,7 +92,7 @@ class denoiser(object):
         start_time = time.time()
         for epoch in xrange(start_epoch, epoch):
             np.random.shuffle(data)
-            for batch_id in xrange(start_step, numBatch):
+            for batch_id in xrange(0, numBatch):
                 batch_input = data[0][batch_id * batch_size:(batch_id + 1) * batch_size, :, :, :]
                 batch_label = data[1][batch_id * batch_size:(batch_id + 1) * batch_size, :, :, :]
                 _, loss = self.sess.run([self.train_op, self.loss],
@@ -100,7 +100,7 @@ class denoiser(object):
                                                             self.is_training: True})
                 iter_num += 1
 
-                if iter_num % 2000 == 0:
+                if iter_num % 500 == 0:
                     print("Epoch: [%2d] [%4d/%4d] time: %4.4f, loss: %.6f"
                           % (epoch + 1, batch_id + 1, numBatch, time.time() - start_time, loss))
                     self.save(iter_num, ckpt_dir)
