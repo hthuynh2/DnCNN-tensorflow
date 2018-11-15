@@ -5,7 +5,16 @@ import sys
 import numpy as np
 import tensorflow as tf
 from PIL import Image
+import cv2
+from PIL import Image
+import PIL
+import scipy
+import scipy.ndimage
 
+try:
+    xrange
+except:
+    xrange = range
 
 def data_augmentation(image, mode):
     if mode == 0:
@@ -98,3 +107,58 @@ def tf_psnr(im1, im2):
     # assert pixel value range is 0-1
     mse = tf.losses.mean_squared_error(labels=im2 * 255.0, predictions=im1 * 255.0)
     return 10.0 * (tf.log(255.0 ** 2 / mse) / tf.log(10.0))
+
+
+def imread(path):
+    """
+    Read image using its path.
+    Default value is gray-scale, and image is read by YCbCr format as the paper said.
+    """
+    return cv2.imread(path, cv2.IMREAD_GRAYSCALE).astype(float)
+
+def get_image_path(is_train, s, num):
+    assert (s == 128 or s == 64)
+    path = os.path.join(os.getcwd(), "xray_images/")
+    image_name = ""
+    if not is_train:
+        path += 'test_images_'
+        image_name += 'test_'
+    else:
+        path += 'train_images_'
+        image_name += 'train_'
+    if s == 64:
+        path += '64x64'
+    elif s == 128:
+        path += '128x128'
+    num_str = format(num, "05")
+    image_name += num_str + ".png"
+    return path + "/" + image_name
+
+
+def preprocess(image_path, label_path="", scale=2):
+    """
+    Preprocess single image file
+      (1) Read original image as YCbCr format (and grayscale as default)
+      (2) Normalize
+      (3) Apply image file with bicubic interpolation
+
+    Args:
+      path: file path of desired file
+      input_: image applied bicubic interpolation (low-resolution)
+      label_: image with original resolution (high-resolution)
+    """
+    label = None
+    image = imread(image_path)
+    image = image / 255.
+
+    if label_path != "":
+        label = imread(label_path)
+        label = scipy.ndimage.interpolation.zoom(label, 0.5, prefilter=False)
+        # label = cv2.resize(label, (64, 64))
+        # label_img= label.astype('uint8')
+        # cv2.imshow('image', label_img)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
+        label = label / 255.
+
+    return image, label
