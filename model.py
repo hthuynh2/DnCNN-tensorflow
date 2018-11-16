@@ -94,12 +94,13 @@ class denoiser(object):
         index_array = np.arange(input_data.shape[0])
         for epoch in xrange(start_epoch, epoch):
             np.random.shuffle(index_array)
-            label_data = label_data[index_array]
-            gc.collect()
-            input_data = input_data[index_array]
             for batch_id in range(0, numBatch):
-                batch_input = input_data[batch_id * batch_size:(batch_id + 1) * batch_size, :, :, :]
-                batch_label = label_data[batch_id * batch_size:(batch_id + 1) * batch_size, :, :, :]
+                batch_id_array = index_array[batch_id * batch_size:(batch_id + 1) * batch_size]
+                batch_input = input_data[batch_id_array]
+                batch_label = label_data[batch_id_array]
+        
+                # batch_input = input_data[batch_id * batch_size:(batch_id + 1) * batch_size, :, :, :]
+                # batch_label = label_data[batch_id * batch_size:(batch_id + 1) * batch_size, :, :, :]
                 _, loss = self.sess.run([self.train_op, self.loss],
                                                  feed_dict={self.Y: batch_label, self.X: batch_input, self.lr: lr,
                                                             self.is_training: True})
