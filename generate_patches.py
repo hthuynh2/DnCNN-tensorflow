@@ -76,7 +76,7 @@ def generate_patches_train(isDebug=False):
         #         labels_list[idx] = sub_label
         #         idx += 1
 
-    print("idx==" + idx)
+    print("idx==" + str(idx))
     if not os.path.exists(args.save_dir):
         os.mkdir(args.save_dir)
 
