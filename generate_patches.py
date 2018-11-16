@@ -45,9 +45,9 @@ def generate_patches_train(isDebug=False):
     count = count * 16000
     print(count)
 
-
-    inputs_list = np.zeros((count, args.pat_size, args.pat_size, 1))
-    labels_list = np.zeros((count, args.pat_size, args.pat_size, 1))
+    count = 16000
+    inputs_list = np.zeros((count, 128, 128, 1))
+    labels_list = np.zeros((count, 128, 128, 1))
 
     idx = 0
     # generate patches
@@ -56,18 +56,21 @@ def generate_patches_train(isDebug=False):
             print("Processing image #" + str(i))
         input_path = get_image_path(True, 64, i)
         label_path = get_image_path(True, 128, i)
-        input_img, label_img = preprocess(input_path, label_path)
-        im_h, im_w = input_img.shape
-        for x in range(0 + args.step, im_h - args.pat_size, args.stride):
-            for y in range(0 + args.step, im_w - args.pat_size, args.stride):
-                sub_input = input_img[x:x + args.pat_size, y:y + args.pat_size]
-                sub_label = label_img[x:x + args.pat_size, y:y + args.pat_size]
-                sub_input = sub_input.reshape([args.pat_size, args.pat_size, 1])
-                sub_label = sub_label.reshape([args.pat_size, args.pat_size, 1])
+        inputs_list[idx], labels_list[idx] = preprocess(input_path, label_path)
+        idx += 1
 
-                inputs_list[idx] = sub_input
-                labels_list[idx] = sub_label
-                idx += 1
+        # input_img, label_img = preprocess(input_path, label_path)
+        # im_h, im_w = input_img.shape
+        # for x in range(0 + args.step, im_h - args.pat_size, args.stride):
+        #     for y in range(0 + args.step, im_w - args.pat_size, args.stride):
+        #         sub_input = input_img[x:x + args.pat_size, y:y + args.pat_size]
+        #         sub_label = label_img[x:x + args.pat_size, y:y + args.pat_size]
+        #         sub_input = sub_input.reshape([args.pat_size, args.pat_size, 1])
+        #         sub_label = sub_label.reshape([args.pat_size, args.pat_size, 1])
+        #
+        #         inputs_list[idx] = sub_input
+        #         labels_list[idx] = sub_label
+        #         idx += 1
 
     print("idx==" + idx)
     if not os.path.exists(args.save_dir):
