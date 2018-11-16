@@ -149,11 +149,11 @@ def preprocess(image_path, label_path="", scale=2):
     """
     label = None
     image = imread(image_path)
+    image = scipy.ndimage.interpolation.zoom(image, 2.0 , prefilter=False)
     image = image / 255.
-
     if label_path != "":
         label = imread(label_path)
-        label = scipy.ndimage.interpolation.zoom(label, 0.5, prefilter=False)
+        # label = scipy.ndimage.interpolation.zoom(label, 0.5, prefilter=False)
         # label = cv2.resize(label, (64, 64))
         # label_img= label.astype('uint8')
         # cv2.imshow('image', label_img)

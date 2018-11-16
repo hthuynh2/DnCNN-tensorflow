@@ -13,8 +13,8 @@ DATA_AUG_TIMES = 1  # transform a sample to a different sample for DATA_AUG_TIME
 parser = argparse.ArgumentParser(description='')
 parser.add_argument('--src_dir', dest='src_dir', default='./data/Train400', help='dir of data')
 parser.add_argument('--save_dir', dest='save_dir', default='./data', help='dir of patches')
-parser.add_argument('--patch_size', dest='pat_size', type=int, default=16, help='patch size')
-parser.add_argument('--stride', dest='stride', type=int, default=4, help='stride')
+parser.add_argument('--patch_size', dest='pat_size', type=int, default=40, help='patch size')
+parser.add_argument('--stride', dest='stride', type=int, default=11, help='stride')
 parser.add_argument('--step', dest='step', type=int, default=0, help='step')
 parser.add_argument('--batch_size', dest='bat_size', type=int, default=128, help='batch size')
 # check output arguments
