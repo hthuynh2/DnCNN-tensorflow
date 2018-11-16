@@ -2,6 +2,7 @@ import time
 
 from utils import *
 import scipy
+import gc
 
 try:
     xrange
@@ -94,6 +95,7 @@ class denoiser(object):
         for epoch in xrange(start_epoch, epoch):
             np.random.shuffle(index_array)
             label_data = label_data[index_array]
+            gc.collect()
             input_data = input_data[index_array]
             for batch_id in range(0, numBatch):
                 batch_input = input_data[batch_id * batch_size:(batch_id + 1) * batch_size, :, :, :]
