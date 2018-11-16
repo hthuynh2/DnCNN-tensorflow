@@ -72,9 +72,9 @@ class denoiser(object):
                                             feed_dict={self.X: data, self.is_training: False})
         return output_clean_image
 
-    def train(self, data, batch_size, ckpt_dir, epoch, lr):
+    def train(self, input_data, label_data, batch_size, ckpt_dir, epoch, lr):
         # assert data range is between 0 and 1
-        numBatch = int(data[0].shape[0] / batch_size)
+        numBatch = int(input_data.shape[0] / batch_size)
         # load pretrained model
         load_model_status, global_step = self.load(ckpt_dir)
         if load_model_status:
@@ -90,11 +90,12 @@ class denoiser(object):
 
         print("[*] Start training, with start epoch %d start iter %d : " % (start_epoch, iter_num))
         start_time = time.time()
+        index_array = np.arrange(numBatch)
         for epoch in xrange(start_epoch, epoch):
-            np.random.shuffle(data)
-            for batch_id in xrange(0, numBatch):
-                batch_input = data[0][batch_id * batch_size:(batch_id + 1) * batch_size, :, :, :]
-                batch_label = data[1][batch_id * batch_size:(batch_id + 1) * batch_size, :, :, :]
+            np.random.shuffle(index_array)
+            for batch_id in index_array:
+                batch_input = input_data[0][batch_id * batch_size:(batch_id + 1) * batch_size, :, :, :]
+                batch_label = label_data[1][batch_id * batch_size:(batch_id + 1) * batch_size, :, :, :]
                 _, loss = self.sess.run([self.train_op, self.loss],
                                                  feed_dict={self.Y: batch_label, self.X: batch_input, self.lr: lr,
                                                             self.is_training: True})

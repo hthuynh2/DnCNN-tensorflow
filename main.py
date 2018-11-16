@@ -24,8 +24,7 @@ args = parser.parse_args()
 def denoiser_train(denoiser, lr):
     input_data = np.load('./data/input_data_pats.npy')
     label_data = np.load('./data/label_data_pats.npy')
-    data = np.dstack((input_data, label_data))
-    denoiser.train(data, batch_size=args.batch_size, ckpt_dir=args.ckpt_dir, epoch=args.epoch, lr=lr)
+    denoiser.train(input_data, label_data, batch_size=args.batch_size, ckpt_dir=args.ckpt_dir, epoch=args.epoch, lr=lr)
 
 
     # with load_data(filepath='./data/img_clean_pats.npy') as data:
