@@ -90,7 +90,7 @@ class denoiser(object):
 
         print("[*] Start training, with start epoch %d start iter %d : " % (start_epoch, iter_num))
         start_time = time.time()
-        index_array = np.arrange(numBatch)
+        index_array = np.arange(numBatch)
         for epoch in xrange(start_epoch, epoch):
             np.random.shuffle(index_array)
             for batch_id in index_array:
