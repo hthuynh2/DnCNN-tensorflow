@@ -56,7 +56,11 @@ def generate_patches_train(isDebug=False):
             print("Processing image #" + str(i))
         input_path = get_image_path(True, 64, i)
         label_path = get_image_path(True, 128, i)
-        inputs_list[idx], labels_list[idx] = preprocess(input_path, label_path)
+        sub_input, sub_label = preprocess(input_path, label_path)
+        sub_input = sub_input.reshape([128, 128, 1])
+        sub_label = sub_label.reshape([128,128 , 1])
+        labels_list[idx] = sub_label
+        inputs_list[idx] = sub_input
         idx += 1
 
         # input_img, label_img = preprocess(input_path, label_path)
