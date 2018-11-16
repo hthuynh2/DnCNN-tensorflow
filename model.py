@@ -93,8 +93,8 @@ class denoiser(object):
         index_array = np.arange(input_data.shape[0])
         for epoch in xrange(start_epoch, epoch):
             np.random.shuffle(index_array)
-            input_data = input_data[index_array]
             label_data = label_data[index_array]
+            input_data = input_data[index_array]
             for batch_id in range(0, numBatch):
                 batch_input = input_data[batch_id * batch_size:(batch_id + 1) * batch_size, :, :, :]
                 batch_label = label_data[batch_id * batch_size:(batch_id + 1) * batch_size, :, :, :]
