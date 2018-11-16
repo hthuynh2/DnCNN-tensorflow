@@ -36,9 +36,17 @@ def generate_patches_train(isDebug=False):
     print("number of training data %d" % len(filepaths))
 
     ######---------------
-    inputs_list = []
-    labels_list = []
+    count = 0
 
+    im_h = im_w = 128
+    for x in range(0 + args.step, im_h - args.pat_size, args.stride):
+        for y in range(0 + args.step, im_w - args.pat_size, args.stride):
+            count += 1
+    count = count * 16000
+    inputs_list = np.zeros((count, 128, 128, 1))
+    labels_list = np.zeros((count, 128, 128, 1))
+
+    idx = 0
     # generate patches
     for i in range(4000, 20000):
         if (i%500==0):
@@ -54,19 +62,18 @@ def generate_patches_train(isDebug=False):
                 sub_input = sub_input.reshape([args.pat_size, args.pat_size, 1])
                 sub_label = sub_label.reshape([args.pat_size, args.pat_size, 1])
 
-                inputs_list.append(sub_input)
-                labels_list.append(sub_label)
+                inputs_list[idx] = sub_input
+                labels_list[idx] = sub_label
+                idx += 1
 
-    arrdata = np.asarray(inputs_list)  # [?, ?, ?, ?]
-    arrlabel = np.asarray(labels_list)  # [?, ?, ?, ?]
-
+    print("idx==" + idx)
     if not os.path.exists(args.save_dir):
         os.mkdir(args.save_dir)
 
     #"img_clean_pats"
-    np.save(os.path.join(args.save_dir, "input_data_pats"), arrdata)
-    np.save(os.path.join(args.save_dir, "label_data_pats"), arrlabel)
-    print("size of inputs tensor = " + str(arrdata.shape))
+    np.save(os.path.join(args.save_dir, "input_data_pats"), inputs_list)
+    np.save(os.path.join(args.save_dir, "label_data_pats"), labels_list)
+    print("size of inputs tensor = " + str(labels_list.shape))
 
 
 if __name__ == '__main__':
