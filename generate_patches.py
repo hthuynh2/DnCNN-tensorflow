@@ -43,6 +43,9 @@ def generate_patches_train(isDebug=False):
         for y in range(0 + args.step, im_w - args.pat_size, args.stride):
             count += 1
     count = count * 16000
+    print(count)
+
+
     inputs_list = np.zeros((count, 128, 128, 1))
     labels_list = np.zeros((count, 128, 128, 1))
 
