@@ -46,8 +46,8 @@ def generate_patches_train(isDebug=False):
     print(count)
 
 
-    inputs_list = np.zeros((count, 128, 128, 1))
-    labels_list = np.zeros((count, 128, 128, 1))
+    inputs_list = np.zeros((count, args.pat_size, args.pat_size, 1))
+    labels_list = np.zeros((count, args.pat_size, args.pat_size, 1))
 
     idx = 0
     # generate patches
