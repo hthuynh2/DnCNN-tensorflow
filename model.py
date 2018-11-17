@@ -109,6 +109,8 @@ class denoiser(object):
                 if iter_num % 10 == 0:
                     print("Epoch: [%2d] [%4d/%4d] time: %4.4f, loss: %.6f"
                           % (epoch + 1, batch_id + 1, numBatch, time.time() - start_time, loss))
+                    if iter_num % 50 == 0:
+                        self.predict(ckpt_dir, "./test")
                 if iter_num % 250 == 0:
                     print("Epoch: [%2d] [%4d/%4d] time: %4.4f, loss: %.6f"
                           % (epoch + 1, batch_id + 1, numBatch, time.time() - start_time, loss))
@@ -139,7 +141,7 @@ class denoiser(object):
         else:
             return False, 0
 
-    def predict(self, ckpt_dir, save_dir, is_training=False):
+    def predict(self, ckpt_dir, save_dir):
         # init variables
         tf.initialize_all_variables().run()
         load_model_status, global_step = self.load(ckpt_dir)
