@@ -139,7 +139,7 @@ class denoiser(object):
         else:
             return False, 0
 
-    def predict(self, ckpt_dir, save_dir):
+    def predict(self, ckpt_dir, save_dir, is_training=False):
         # init variables
         tf.initialize_all_variables().run()
         load_model_status, global_step = self.load(ckpt_dir)
@@ -159,7 +159,12 @@ class denoiser(object):
             output_clean_image = output_clean_image[0]
             outputimage = np.squeeze(output_clean_image)
             outputimage = np.clip(255 * outputimage, 0, 255).astype('uint8')
-            scipy.misc.imsave(os.path.join(save_dir, 'denoised_test_%s.png' % format(i, "05")), outputimage)
+
+            saved_path = os.path.join(save_dir, 'denoised_test_%s' % format(i, "05"))
+            saved_path += format(global_step, "05") + '.png'
+            #     saved_path = os.path.join(save_dir, 'denoised_test_%s.png' % format(i, "05"))
+
+            scipy.misc.imsave(saved_path, outputimage)
 
 
     def test(self, test_files, ckpt_dir, save_dir):
