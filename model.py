@@ -89,6 +89,8 @@ class denoiser(object):
             start_step = 0
             print("[*] Not find pretrained model!")
 
+        self.predict(ckpt_dir, "./test", iter_num, False)
+
         print("[*] Start training, with start epoch %d start iter %d : " % (start_epoch, iter_num))
         start_time = time.time()
         index_array = np.arange(input_data.shape[0])
@@ -110,7 +112,7 @@ class denoiser(object):
                     print("Epoch: [%2d] [%4d/%4d] time: %4.4f, loss: %.6f"
                           % (epoch + 1, batch_id + 1, numBatch, time.time() - start_time, loss))
                     if iter_num % 50 == 0:
-                        self.predict(ckpt_dir, "./test")
+                        self.predict(ckpt_dir, "./test", iter_num, False)
                 if iter_num % 250 == 0:
                     print("Epoch: [%2d] [%4d/%4d] time: %4.4f, loss: %.6f"
                           % (epoch + 1, batch_id + 1, numBatch, time.time() - start_time, loss))
@@ -141,12 +143,17 @@ class denoiser(object):
         else:
             return False, 0
 
-    def predict(self, ckpt_dir, save_dir):
+    def predict(self, ckpt_dir, save_dir, iter_num=-1, should_load=True):
+
+        global_step = 0
         # init variables
-        tf.initialize_all_variables().run()
-        load_model_status, global_step = self.load(ckpt_dir)
-        assert load_model_status == True, '[!] Load weights FAILED...'
-        print(" [*] Load weights SUCCESS...")
+        if should_load == True:
+            tf.initialize_all_variables().run()
+            load_model_status, global_step = self.load(ckpt_dir)
+            assert load_model_status == True, '[!] Load weights FAILED...'
+            print(" [*] Load weights SUCCESS...")
+        else:
+            global_step = iter_num
         # for i in range(1, 3):
         for i in range(4000, 4003):
             # img_path = get_image_path(False, 64, i)
