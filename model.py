@@ -142,9 +142,12 @@ class denoiser(object):
         load_model_status, global_step = self.load(ckpt_dir)
         assert load_model_status == True, '[!] Load weights FAILED...'
         print(" [*] Load weights SUCCESS...")
-        for i in range(1, 4000):
-            img_path = get_image_path(False, 64, i)
+        # for i in range(1, 3):
+        for i in range(4000, 4003):
+            # img_path = get_image_path(False, 64, i)
+            img_path = get_image_path(True, 64, i)
             img = imread(img_path)
+            img = scipy.ndimage.interpolation.zoom(img, 2.0, prefilter=False)
             img /= 255.0
             img = img.reshape(1, img.shape[0], img.shape[1], 1)
 
