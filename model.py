@@ -163,7 +163,7 @@ class denoiser(object):
             outputimage = np.clip(255 * outputimage, 0, 255).astype('uint8')
 
             saved_path = os.path.join(save_dir, 'denoised_test_%s' % format(i, "05"))
-            saved_path += format(global_step, "05") + '.png'
+            saved_path += "_" + str(global_step) + '.png'
             #     saved_path = os.path.join(save_dir, 'denoised_test_%s.png' % format(i, "05"))
 
             scipy.misc.imsave(saved_path, outputimage)
