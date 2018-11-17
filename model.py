@@ -93,10 +93,10 @@ class denoiser(object):
         start_time = time.time()
         index_array = np.arange(input_data.shape[0])
         for epoch in xrange(start_epoch, epoch):
+            lr = max(lr/epoch, 0.001)
+            lr = lr/1.0
             np.random.shuffle(index_array)
             for batch_id in range(0, numBatch):
-                if batch_id % 3 == 0:
-                    print("Start training batch_id" + str(batch_id))
                 batch_id_array = index_array[batch_id * batch_size:(batch_id + 1) * batch_size]
                 batch_input = input_data[batch_id_array]
                 batch_label = label_data[batch_id_array]
