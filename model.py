@@ -95,7 +95,7 @@ class denoiser(object):
         for epoch in xrange(start_epoch, epoch):
             np.random.shuffle(index_array)
             for batch_id in range(0, numBatch):
-                if batch_id < 3:
+                if batch_id % 3 == 0:
                     print("Start training batch_id" + str(batch_id))
                 batch_id_array = index_array[batch_id * batch_size:(batch_id + 1) * batch_size]
                 batch_input = input_data[batch_id_array]
@@ -106,7 +106,7 @@ class denoiser(object):
                                                             self.is_training: True})
                 iter_num += 1
 
-                if iter_num % 20 == 0:
+                if iter_num % 10 == 0:
                     print("Epoch: [%2d] [%4d/%4d] time: %4.4f, loss: %.6f"
                           % (epoch + 1, batch_id + 1, numBatch, time.time() - start_time, loss))
                 if iter_num % 250 == 0:
