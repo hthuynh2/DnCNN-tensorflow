@@ -11,7 +11,8 @@ import os
 
 def get_image_path(is_test, s, num):
     assert (s == 128 or s == 64)
-    path = os.path.join('/Users/hthieu/PycharmProjects/CS446_Final_Project', "xray_images/")
+    # path = os.path.join('/Users/hthieu/PycharmProjects/CS446_Final_Project', "xray_images/")
+    path = os.path.join(os.getcwd(), "xray_images/")
     image_name = ""
     if is_test:
         path += 'test_images_'
