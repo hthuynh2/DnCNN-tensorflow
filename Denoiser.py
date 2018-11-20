@@ -43,7 +43,7 @@ def load_data():
         y_train[i - start_idx] = clean_img_128
 
     start_idx = 19000
-    end_idx = 19100
+    end_idx = 19200
     N = end_idx - start_idx
     x_test = np.zeros((N, 128, 128))
     y_test = np.zeros((N, 128, 128))
@@ -92,7 +92,7 @@ model = Model(input_img, decoded)
 model.compile(loss=losses.mean_squared_error, optimizer='sgd')
 
 num_epoch = 10000
-save_every_epoch = 50
+save_every_epoch = 5
 cur_epoch = 0
 while cur_epoch < num_epoch:
     print("Start training epoch: " + str(cur_epoch))
