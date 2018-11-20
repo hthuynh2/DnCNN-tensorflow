@@ -56,9 +56,8 @@ def load_data():
         y_test[i - start_idx] = clean_img_128
     return x_train, y_train, x_test, y_test
 
-# def load_latest_model():
 
-
+print("Start loading data...")
 x_train, y_train, x_test, y_test = load_data()
 x_train = x_train.astype('float32') / 255.
 x_train = np.reshape(x_train, (len(x_train), 128, 128, 1))  # adapt this if using `channels_first` image data format
@@ -70,6 +69,7 @@ y_train = y_train.astype('float32') / 255.
 y_train = np.reshape(y_train, (len(y_train), 128, 128, 1))  # adapt this if using `channels_first` image data format
 y_test = y_test.astype('float32') / 255.
 y_test = np.reshape(y_test, (len(y_test), 128, 128, 1))  # adapt this if using `channels_first` image data format
+print("Finished loading data...")
 
 
 input_img = Input(shape=(128, 128, 1))  # adapt this if using `channels_first` image data format
@@ -95,6 +95,7 @@ num_epoch = 10000
 save_every_epoch = 50
 cur_epoch = 0
 while cur_epoch < num_epoch:
+    print("Start training epoch: " + str(cur_epoch))
     model.fit(x_train, y_train,
               epochs=save_every_epoch,
               batch_size=128,
