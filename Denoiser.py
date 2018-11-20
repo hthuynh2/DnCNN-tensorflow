@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from keras.callbacks import TensorBoard
 from keras.layers import Conv2D, UpSampling2D, MaxPooling2D
 from keras.models import Model
-from keras import Input, losses
+from keras import Input, losses, optimizers
 from PIL import Image
 import cv2
 import os
@@ -89,11 +89,13 @@ decoded = Conv2D(1, (3, 3), activation='sigmoid', padding='same')(x)
 
 
 model = Model(input_img, decoded)
+sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9, nesterov=True)
 model.compile(loss=losses.mean_squared_error, optimizer='sgd')
 
+model.load_weights('normal_60.h5')
 num_epoch = 10000
 save_every_epoch = 5
-cur_epoch = 0
+cur_epoch = 60
 while cur_epoch < num_epoch:
     print("Start training epoch: " + str(cur_epoch))
     model.fit(x_train, y_train,
