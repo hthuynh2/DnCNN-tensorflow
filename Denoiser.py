@@ -99,15 +99,6 @@ num_epoch = 10000
 save_every_epoch = 5
 cur_epoch = 90
 while cur_epoch < num_epoch:
-    test_sample = x_train[0]
-    test_prediction = model.predict(np.array([test_sample]))[0]
-    test_sample = test_sample * 255
-    test_sample = test_sample.astype('uint8').reshape((128, 128))
-    test_prediction = test_prediction * 255
-    test_prediction = test_prediction.astype('uint8').reshape((128, 128))
-    im = Image.fromarray(test_prediction)
-    im.save('output_noise_train_' + str(cur_epoch) + '.png')
-    break
     print("Start training epoch: " + str(cur_epoch))
     model.fit(x_train, y_train,
               epochs=save_every_epoch,
@@ -125,6 +116,14 @@ while cur_epoch < num_epoch:
     test_prediction = test_prediction.astype('uint8').reshape((128, 128))
     im = Image.fromarray(test_prediction)
     im.save('output_noise_' + str(cur_epoch) + '.png')
+    test_sample = x_train[0]
+    test_prediction = model.predict(np.array([test_sample]))[0]
+    test_sample = test_sample * 255
+    test_sample = test_sample.astype('uint8').reshape((128, 128))
+    test_prediction = test_prediction * 255
+    test_prediction = test_prediction.astype('uint8').reshape((128, 128))
+    im = Image.fromarray(test_prediction)
+    im.save('output_noise_train_' + str(cur_epoch) + '.png')
 
 
 # test_sample = x_test[0]
